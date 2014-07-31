@@ -71,15 +71,39 @@ window.countNRooksSolutions = function(n) {
   var rows = theMatrix(n);
   // var uglyBoards = recursuve call on rows
   var uglyBoards = theMatrix(n, rows);
+
+  // var countOnes = function(arr) {
+  //   var num = 0;
+  //   // return the first even occurrence
+  //   for(i = 0; i < arr.length; i++) {
+  //     // console.log("Checking "+arr[i]);
+  //     if(arr[i] === 1) {
+  //       num++;
+  //     }
+  //   } 
+  //   return num;
+  // };
+
+  // var filteredBoards = [];
+  // for (var i = 0; i < uglyBoards.length; i++  ){
+  //   if ( countOnes(uglyBoards[i])  === n ) {
+  //     filteredBoards.push(uglyBoards[i]);
+  //   }
+  // }
+  // console.log("ln 94: uglyBoards length is: "+uglyBoards.length);
+  // console.log("ln 95: filteredBoards length is: "+filteredBoards.length);
+  
   var master = [];
   // for every uglyBoard
     // create empty cleanBoard array in master
   for (var i = 0; i < uglyBoards.length; i++ ) {
     var bucket = [];
     //********while loop might work for this*******
-    var row1 = uglyBoards[i];
-    var row2 = row1.splice(2,2); //have to change the splice to take in n
-    bucket.push(row1, row2);
+    var copy = uglyBoards[i].slice();
+    for(var j = 1; j <= n; j++){
+      var newRow = copy.splice(0, n);
+      bucket.push(newRow);
+    }
 
     //check to make sure only one rook per row
     var good = true;
@@ -114,8 +138,6 @@ window.countNRooksSolutions = function(n) {
     }
   }
 
-
-  console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
 };
 
@@ -123,10 +145,27 @@ window.countNRooksSolutions = function(n) {
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
-  var solution = undefined; //fixme
+  // Set board
+  var board = new Board({'n': n});
+  // Get Rows
+  var rows = board.rows();
+  // for every row
+  for(var i = 0; i < rows.length; i++){
+  // for every square
+    for(var j = 0; j < rows[i].length; j++){
+      // place a piece
+      board.togglePiece(i, j);
+      // check for conflictss
+      if( board.hasAnyQueensConflicts() ) {
+        // if conflict, remove piece
+        board.togglePiece(i, j);
+      }
+    }
+  }
 
-  console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
-  return solution;
+  console.log('Single solution for ' + n + ' rooks:', JSON.stringify(rows));
+  // return board
+  return rows;
 };
 
 
