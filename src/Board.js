@@ -162,44 +162,48 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      // get every row
-      var obj = this.rows();
-
-      // init a variable to make it easier
-      var current = majorDiagonalColumnIndexAtFirstRow;
-      var count = 0;
-      // for every index in every row, check one row down and one index over
-      for(var i = 0; i < obj.length; i++){
-        // guard against last index position, 
-        // current will be on ahead of our index after first iteration
-        // increment count
-        if ( obj[i][current] === 1) {
-        count++;
+      // get the board array
+      var board = this.rows();
+      //create a major object
+      var major = {};
+      // for the board
+      // console.log("ln 171: This is our board: "+board);
+      for ( var row = 0; row < board.length; row ++ )
+        // iterate over every row
+        for ( var space = 0; space < board[row].length; space++ ){
+          // console.log("ln 174: checking row: "+row+" space "+space);
+          // if the space has a queen
+          if ( board[row][space] ){
+            // console.log("ln 177: Piece found! Diagonal Value is: "+ (space-row));
+            // check to see if our major object
+            // already has the same key
+            // console.log("checking for key "+(space-row));
+            if ( major.hasOwnProperty(space-row)) {
+              // console.log("We have an USURPER!!!");
+              // if it does, return true
+              return true;
+            } else {
+              // console.log("ln 184: We have crowned a queen!");
+              // if the is NO pre-existing key
+              // make one
+              major[(space-row)] = 1;
+              // console.log("ln 185: major is "+major );
+            }
+          }
         }
-        current++;
-      }
-      if ( count > 1 ) {
-        return true;
-      } else {
-        return false;
-      }
+        // console.log(major);
+      // if no matching keys, return false
+      return false; // fixme
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      // get all rows
-      var obj = this.rows();
-      var n = obj.length;
-      var result = false;
       
-      // use row length as an incrementer for hasMajorDiagonalConflictAt
-      // change starting point to be -n + 1, which coves entire board
-      for ( var i = -1*n+1; i < n; i++) {
-        if (this.hasMajorDiagonalConflictAt(i)) {
-          result = true;
-        }
+      if ( this.hasMajorDiagonalConflictAt()) {
+        return true;
       }
-      return result;
+      
+      return false; // fixme
     },
 
 
@@ -209,37 +213,40 @@
     //
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
-      var obj = this.rows();
-      var current = minorDiagonalColumnIndexAtFirstRow;
-      var count = 0;
-      for(var i = 0; i < obj.length; i++){
-        // instead of incrementing counr, decrement to find one down, one left
-        if ( obj[i][current] === 1) {
-        count++;
+      // get the board array
+      var board = this.rows();
+      //create a minor object
+      var minor = {};
+      // for the board
+      for ( var row = 0; row < board.length; row ++ )
+        // iterate over every row
+        for ( var space = 0; space < board[row].length; space++ ){
+          // if the space has a queen
+          if ( board[row][space] ){
+            // check to see if our minor object
+            // already has the same key
+            if ( minor.hasOwnProperty(space+row)) {
+              // if it does, return true
+              return true;
+            } else {
+              // if the is NO pre-existing key
+              // make one
+              minor[(space+row)] = 1;
+            }
+          }
         }
-        current--;
-      }
-      if ( count > 1 ) {
-        return true;
-      } else {
-        return false;
-      }
+      // if no matching keys, return false
+      return false; // fixme
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      var obj = this.rows();
-      var n = obj.length;
-      var result = false;
-
-      // change end of range to 2n -1 to check entire board 
-      for ( var i = 0; i < 2*n-1; i++) {
-        if (this.hasMinorDiagonalConflictAt(i)) {
-          result = true;
-        }
+      if ( this.hasMinorDiagonalConflictAt() ){
+        return true;
       }
-      return result;
-    },
+      return false; // fixme
+    }
+
 
     /*--------------------  End of Helper Functions  ---------------------*/
 
