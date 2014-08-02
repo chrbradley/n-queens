@@ -79,35 +79,38 @@
     //
     // test if a specific row on this board contains a conflict
     hasRowConflictAt: function(rowIndex) {
-      // initalize count
-      var count = 0;
-
-      // for every index of a row, count 1's
-      for ( var i = 0; i < rowIndex.length; i++ ) {
-        if ( rowIndex[i] === 1) {
-          count++;
+      // get the board array
+      var board = this.rows();
+      //create a rowObject object
+      var rowObject = {};
+      // for the board
+      for ( var row = 0; row < board.length; row ++ )
+        // iterate over every row
+        for ( var space = 0; space < board[row].length; space++ ){
+          // if the space has a queen
+          if ( board[row][space] ){
+            // check to see if our rowObject object
+            // already has the same key
+            if ( rowObject.hasOwnProperty(row)) {
+              // if it does, return true
+              return true;
+            } else {
+              // if the is NO pre-existing key
+              // make one
+              rowObject[(row)] = 1;
+            }
+          }
         }
-      }
-      if ( count > 1 ) {
-        return true;
-      } else {
-        return false;
-      }
+      // if no matching keys, return false
+      return false; // fixme
     },
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
-      // get all of the rows
-      var obj = this.rows();
-      // initialize result
-      var result = false;
-      // for every row, call hasRowConflictAt
-      for ( var i = 0; i < obj.length; i++) {
-        if (this.hasRowConflictAt(obj[i])) {
-          result = true;
-        }
+     if ( this.hasRowConflictAt()) {
+        return true;
       }
-      return result;
+      return false; // fixme
     },
 
 
@@ -117,42 +120,38 @@
     //
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
-
-      // get every row
-      var obj = this.rows();
-
-      // initialize count
-      var count = 0;
-
-      // for every row
-      for ( var i = 0; i < obj.length; i++) {
-        // check index value at row
-        // using [colIndex] forces check single index in each row
-        if ( obj[i][colIndex] === 1) {
-
-          // increment count if it's 1
-          count++;
+      // get the board array
+      var board = this.rows();
+      //create a colObject object
+      var colObject = {};
+      // for the board
+      for ( var row = 0; row < board.length; row ++ )
+        // iterate over every row
+        for ( var space = 0; space < board[row].length; space++ ){
+          // if the space has a queen
+          if ( board[row][space] ){
+            // check to see if our colObject object
+            // already has the same key
+            if ( colObject.hasOwnProperty(space)) {
+              // if it does, return true
+              return true;
+            } else {
+              // if the is NO pre-existing key
+              // make one
+              colObject[(space)] = 1;
+            }
+          }
         }
-      }
-      if ( count > 1 ) {
-        return true;
-      } else {
-        return false;
-      }
+      // if no matching keys, return false
+      return false; // fixme
     },
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
-      // get every row
-      var obj = this.rows();
-      var result = false;
-      // call hasColConflictAt for every index ( just used as a counter )
-      for ( var i = 0; i < obj.length; i++) {
-        if (this.hasColConflictAt(i)) {
-          result = true;
-        }
+     if ( this.hasColConflictAt()) {
+        return true;
       }
-      return result;
+      return false; // fixme
     },
 
 
